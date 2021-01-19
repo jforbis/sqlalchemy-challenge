@@ -32,8 +32,8 @@ def welcome():
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs<br/>"
-        f"/api/1.0/<start><br/>"
-        f"/api/v1.0/<start>/<end>"
+        f"/api/1.0/start<br/>"
+        f"/api/v1.0/start/end"
     )
 
 # Precipitation
@@ -59,18 +59,16 @@ def precipitation():
 # Return a JSON list of stations from the dataset.
 @app.route("/api/v1.0/stations")
 
-def station():
-    session = Session(engine)
-    results = session.query(stations.id, stations.name).order_by(stations.id).all()
-    station_data = []
-    for id, name, station in results:
-        dict_data = {}
-        dict_data[id] = name
-        station_data.append(dict_data)
+# def stations():
+#     session = Session(engine)
+#     results = session.query(stations.id, stations.name).all()
+#     station_data = {}
+#     for id, name in results:
+#         station_data[id] = name
 
-    session.close()
-    return results
-
+#     session.close()
+#     return jsonify(station_data)
+print("Hello World")
 # Tobs
 # Query the dates and temperature observations of the most active station for the last year of data.
 # Return a JSON list of temperature observations (TOBS) for the previous year.
