@@ -25,7 +25,7 @@ app = Flask(__name__)
 
 # Routes
 # Home Page
-@app.rout("/")
+@app.route("/")
 def welcome():
     return (
         f"Available Routes:<br/>"
