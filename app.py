@@ -25,7 +25,19 @@ app = Flask(__name__)
 
 # Routes
 # Home Page
+@app.rout("/")
+def welcome():
+    return (
+        f"Available Routes:<br/>"
+        f"/api/v1.0/precipitation"
+        f"/api/v1.0/stations"
+        f"/api/v1.0/tobs"
+        f"/api/1.0/<start>"
+        f"/api/v1.0/<start>/<end>"
+    )
+
 # Precipitation
+
 # Stations
 # Tobs
 # Start/End?
