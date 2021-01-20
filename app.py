@@ -28,12 +28,19 @@ app = Flask(__name__)
 @app.route("/")
 def welcome():
     return (
-        f"Available Routes:<br/>"
-        f"/api/v1.0/precipitation<br/>"
-        f"/api/v1.0/stationlist<br/>"
-        f"/api/v1.0/tobs<br/>"
-        f"/api/1.0/start<br/>"
-        f"/api/v1.0/start/end"
+        "Available Routes:<br/>"
+        "/api/v1.0/precipitation<br/>"
+        " - This route will show you a list of precipitation by each day<br/>"
+        "/api/v1.0/stationlist<br/>"
+        " - This route will show you a list of all the weather stations<br/>"
+        "/api/v1.0/tobs<br/>"
+        " - This route will show you all temperature information<br/>"
+        "/api/1.0/start<br/>"
+        " - This route will show you the minimum, max, and average (mean) temperatures of all dates GREATER than the date you put in<br/>"
+        " - Please enter your date in this format yyyy-mm-dd<br/>"
+        "/api/v1.0/start/end<br/>"
+        " - This route will show you the minimum, max, and average (mean) temperatures of all dates BETWEEN the START and END dates you put in<br/>"
+        " - Please enter your date in this format (start/end) 'yyyy-mm-dd/yyyy-mm-dd'<br/>"
     )
 
 # Precipitation - Route Works
@@ -107,7 +114,7 @@ def start_date(start):
 
 # When given the start and the end date, calculate the `TMIN`, `TAVG`, and `TMAX` for dates between the start and end date inclusive.
 @app.route("/api/v1.0/<start>/<end>")
-def start_date(start, end):
+def start_end_date(start, end):
     session = Session(engine)
 
     results = session.query(func.min(measurements.tobs), func.avg(measurements.tobs), func.max(measurements.tobs)).filter(measurements.date >= start).filter(measurements.date <= end).all()
@@ -120,11 +127,6 @@ def start_date(start, end):
         tobs_dict["max"] = max
     session.close()
     return jsonify(tobs_dict)
-
-# HINTS:
-# You will need to join the station and measurement tables for some of the queries.
-
-# Use Flask `jsonify` to convert your API data into a valid JSON response object.
 
 if __name__ == '__main__':
     app.run(debug=True)
