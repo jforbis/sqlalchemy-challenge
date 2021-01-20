@@ -94,7 +94,7 @@ def tobs():
 def start_date(start):
     session = Session(engine)
 
-    results = session.query(func.min(measurements.tobs), func.avg(measurements.tobs), func.max(measurements.tobs).filter(measurements.date >= start).all())
+    results = session.query(func.min(measurements.tobs), func.avg(measurements.tobs), func.max(measurements.tobs)).filter(measurements.date >= start).all()
 
     tobs_data = []
     for min, avg, max in results:
@@ -103,9 +103,23 @@ def start_date(start):
         tobs_dict["mean"] = avg
         tobs_dict["max"] = max
     session.close()
-    return jsonify(tobs_data)
-# When given the start and the end date, calculate the `TMIN`, `TAVG`, and `TMAX` for dates between the start and end date inclusive.
+    return jsonify(tobs_dict)
 
+# When given the start and the end date, calculate the `TMIN`, `TAVG`, and `TMAX` for dates between the start and end date inclusive.
+@app.route("/api/v1.0/<start>/<end>")
+def start_date(start, end):
+    session = Session(engine)
+
+    results = session.query(func.min(measurements.tobs), func.avg(measurements.tobs), func.max(measurements.tobs)).filter(measurements.date >= start).filter(measurements.date <= end).all()
+
+    tobs_data = []
+    for min, avg, max in results:
+        tobs_dict = {}
+        tobs_dict["min"] = min
+        tobs_dict["mean"] = avg
+        tobs_dict["max"] = max
+    session.close()
+    return jsonify(tobs_dict)
 
 # HINTS:
 # You will need to join the station and measurement tables for some of the queries.
