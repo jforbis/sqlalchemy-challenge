@@ -90,6 +90,13 @@ def tobs():
 # Start/End?
 # Return a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start or start-end range.
 # When given the start only, calculate `TMIN`, `TAVG`, and `TMAX` for all dates greater than and equal to the start date.
+@app.route("/api/v1.0/<start>")
+def start_date(start):
+    session=Session(engine)
+
+    results = session.query(func.min(measurements.tobs), func.avg(measurements.tobs), func.max(measurements.tobs).filter(measurements.date >= start).all()
+    session.close()
+    return jsonify(results)
 # When given the start and the end date, calculate the `TMIN`, `TAVG`, and `TMAX` for dates between the start and end date inclusive.
 
 
