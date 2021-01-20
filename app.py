@@ -39,7 +39,7 @@ def welcome():
 # Precipitation - Route Works
 # Convert the query results to a dictionary using `date` as the key and `prcp` as the value.
 # Return the JSON representation of your dictionary.
-@app.route("/api/v1.0/precipitation")
+@app.route("/api/v1.0/precipitation/")
 def precipitation():
     session = Session(engine)
     results = session.query(measurements.date, measurements.prcp).all()
@@ -51,12 +51,12 @@ def precipitation():
         prcp_data.append(dict_data)
 
     session.close()
-
+    
     return jsonify(prcp_data)
 
 # Station List - Route Works but not every time
 # Return a JSON list of stations from the dataset.
-@app.route("/api/v1.0/stationlist")
+@app.route("/api/v1.0/stationlist/")
 def stationlist():
     session = Session(engine)
     results = session.query(stations.station, stations.name).all()
@@ -70,7 +70,7 @@ def stationlist():
 # Tobs - Route Works but not every time
 # Query the dates and temperature observations of the most active station for the last year of data.
 # Return a JSON list of temperature observations (TOBS) for the previous year.
-@app.route("/api/v1.0/tobs")
+@app.route("/api/v1.0/tobs/")
 def tobs():
     session = Session(engine)
 
